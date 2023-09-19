@@ -32,8 +32,8 @@
 #' fit <- lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species, data = iris)
 #' coefplotbl(fit)
 #'
-#' # Example 2: Display only plot & 90\% CI
-#' coefplotbl(fit, add_tbl = FALSE, alpha = 0.1)
+#' # Example 2: Display only plot & 99% CI
+#' coefplotbl(fit, add_tbl = FALSE, alpha = 0.01)
 #'
 #' # Example 3: Recoding covariate names
 #' coefplotbl(fit, coef_rename = c("Sepal.Width"  = "Sepal Width",
@@ -51,6 +51,24 @@
 #'
 #' # Example 6: Display p-value instead of confidential interval (4-digit)
 #' coefplotbl(fit, statistics = "p", digits = 4)
+#'
+#' # Example 7: Labels
+#' coefplotbl(fit, alpha = 0.01, title = "Title",
+#'            xlab = "x-axis label", ylab = "y-axis label")
+#'
+#' # Example 8: Colors
+#' coefplotbl(fit,
+#'            coef_rename = c("Sepal.Width"  = "Sepal Width",
+#'                            "Petal.Length" = "Petal Length",
+#'                            "Petal.Width"  = "Petal Width",
+#'                            "Speciesversicolor" = "Versicolor",
+#'                            "Speciesvirginica"  = "Virginica"),
+#'            highlight   = c("Speciesversicolor", "Speciesvirginica"),
+#'            alpha       = 0.01,
+#'            colors      = c(sig = "black", insig = "gray90", highlight = "royalblue"))
+#'
+#' # Example 9: Show intercept
+#' coefplotbl(fit, intercept = TRUE)
 #'
 
 coefplotbl <- function(x,
