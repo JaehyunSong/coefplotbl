@@ -1,22 +1,23 @@
 #' Coefficient plot with table
 #'
-#' @param x a \code{lm} or \code{glm} object.
-#' @param intercept a logical. Default is \code{FALSE}.
-#' @param add_tbl a logical. Default is \code{TRUE}.
+#' @param x a \code{lm} or \code{glm} object. Objects available for the \code{tidy()} in the \{broom\} package.
+#' @param intercept a logical. If \code{TRUE}, the intercept is displayed.Default is \code{FALSE}.
+#' @param add_tbl a logical. If \code{TRUE} (default), a regression table appears on the right side of the plot.
 #' @param statistics \code{"ci"} (confidential interval; default), \code{"se"} (standard error), \code{"t"} (t-value), or \code{"p"} (p-value).
-#' @param alpha Default is \code{0.05}.
-#' @param sig If \code{TRUE} (default), the point-ranges which are statistically significant are highlighted.
-#' @param digits Default is \code{3}.
-#' @param coef_rename A named character vector.
-#' @param coef_omit A character vector.
-#' @param highlight A character vector.
+#' @param alpha a numeric. a significant level. Default is \code{0.05}.
+#' @param sig a logical. If \code{TRUE} (default), the point-ranges which are statistically significant are highlighted.
+#' @param digits a numeric. number of digits. Default is \code{3}.
+#' @param coef_rename A named character vector. For example, \code{c("Old1" = "New1", "Old2" = "New2")}
+#' @param coef_omit A character vector. Covariate names to be omitted. The covariate names must be the name before it was changed by \code{coef_rename}.
+#' @param highlight A character vector. Covariate names to be highlighted. The covariate names must be the name before it was changed by \code{coef_rename}.
 #' @param xlab a character.
 #' @param ylab a character.
 #' @param title a character.
-#' @param size a numeric value. Default is \code{1}.
-#' @param linewidth A numeric value. Default is \code{0.75}.
+#' @param size a numeric value. Point size. Default is \code{1}.
+#' @param linewidth A numeric value. Line width. Default is \code{0.75}.
 #' @param fontsize A numeric value. Default is \code{12}.
 #' @param colors A named character vector. The names must be \code{sig}, \code{insig}, and \code{highlight}.
+#' @param ... ignored.
 #'
 #' @import broom
 #' @import ggplot2
@@ -87,7 +88,8 @@ coefplotbl <- function(x,
                        size        = 1,
                        linewidth   = 0.75,
                        fontsize    = 12,
-                       colors      = c(sig = "black", insig = "gray70", highlight = "red")) {
+                       colors      = c(sig = "black", insig = "gray70", highlight = "red"),
+                       ...) {
 
   term <- estimate <- conf.low <- conf.high <- NULL
   est2 <- ll2 <- p2 <- se2 <- t2 <- ul2 <- NULL

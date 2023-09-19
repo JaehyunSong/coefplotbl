@@ -21,29 +21,30 @@ coefplotbl(
   size = 1,
   linewidth = 0.75,
   fontsize = 12,
-  colors = c(sig = "black", insig = "gray70", highlight = "red")
+  colors = c(sig = "black", insig = "gray70", highlight = "red"),
+  ...
 )
 }
 \arguments{
-\item{x}{a \code{lm} or \code{glm} object.}
+\item{x}{a \code{lm} or \code{glm} object. Objects available for the \code{tidy()} in the \{broom\} package.}
 
-\item{intercept}{a logical. Default is \code{FALSE}.}
+\item{intercept}{a logical. If \code{TRUE}, the intercept is displayed.Default is \code{FALSE}.}
 
-\item{add_tbl}{a logical. Default is \code{TRUE}.}
+\item{add_tbl}{a logical. If \code{TRUE} (default), a regression table appears on the right side of the plot.}
 
 \item{statistics}{\code{"ci"} (confidential interval; default), \code{"se"} (standard error), \code{"t"} (t-value), or \code{"p"} (p-value).}
 
-\item{alpha}{Default is \code{0.05}.}
+\item{alpha}{a numeric. a significant level. Default is \code{0.05}.}
 
-\item{sig}{If \code{TRUE} (default), the point-ranges which are statistically significant are highlighted.}
+\item{sig}{a logical. If \code{TRUE} (default), the point-ranges which are statistically significant are highlighted.}
 
-\item{digits}{Default is \code{3}.}
+\item{digits}{a numeric. number of digits. Default is \code{3}.}
 
-\item{coef_rename}{A named character vector.}
+\item{coef_rename}{A named character vector. For example, \code{c("Old1" = "New1", "Old2" = "New2")}}
 
-\item{coef_omit}{A character vector.}
+\item{coef_omit}{A character vector. Covariate names to be omitted. The covariate names must be the name before it was changed by \code{coef_rename}.}
 
-\item{highlight}{A character vector.}
+\item{highlight}{A character vector. Covariate names to be highlighted. The covariate names must be the name before it was changed by \code{coef_rename}.}
 
 \item{xlab}{a character.}
 
@@ -51,13 +52,15 @@ coefplotbl(
 
 \item{title}{a character.}
 
-\item{size}{a numeric value. Default is \code{1}.}
+\item{size}{a numeric value. Point size. Default is \code{1}.}
 
-\item{linewidth}{A numeric value. Default is \code{0.75}.}
+\item{linewidth}{A numeric value. Line width. Default is \code{0.75}.}
 
 \item{fontsize}{A numeric value. Default is \code{12}.}
 
 \item{colors}{A named character vector. The names must be \code{sig}, \code{insig}, and \code{highlight}.}
+
+\item{...}{ignored.}
 }
 \value{
 a \code{ggplot} object
