@@ -2,6 +2,12 @@
 
 Coefficient plot with table.
 
+## Author Information
+
+* Jaehyun Song, Ph. D
+* Associate professor in Faculty of Infomatics, Kansai University, JAPAN
+* <https://www.jaysong.net/>
+
 ## Installation
 
 ```r
