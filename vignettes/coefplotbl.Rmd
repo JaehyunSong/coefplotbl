@@ -1,0 +1,99 @@
+---
+title: "coefplotbl"
+author: "Jaehyun Song"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{coefplotbl}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(coefplotbl)
+```
+
+## Install and load {coefplotbl}
+
+```{r, eval = FALSE}
+library(coefplotbl)
+# or
+pacman::p_load_gh("JaehyunSong/coefplotbl")
+```
+
+## Basic usage
+
+```{r, dpi = 100, fig.width = 7, fig.height = 3.5}
+fit <- lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width + Species, data = iris)
+coefplotbl(fit)
+```
+
+## Examples
+
+### Display only plot & 99% CI
+
+```{r, dpi = 100, fig.width = 6.87, fig.height = 3.5}
+coefplotbl(fit, add_tbl = FALSE, alpha = 0.01)
+```
+
+### Recoding covariate names
+
+```{r, dpi = 100, fig.width = 6.87, fig.height = 3.5}
+coefplotbl(fit, coef_rename = c("Sepal.Width"  = "Sepal Width",
+                                "Petal.Length" = "Petal Length",
+                                "Petal.Width"  = "Petal Width",
+                                "Speciesversicolor" = "Versicolor",
+                                "Speciesvirginica"  = "Virginica"))
+```
+
+### Highlight specific covariates
+
+```{r, dpi = 100, fig.width = 6.87, fig.height = 3.5}
+coefplotbl(fit, coef_rename = c("Sepal.Width"  = "Sepal Width",
+                                "Petal.Length" = "Petal Length",
+                                "Petal.Width"  = "Petal Width",
+                                "Speciesversicolor" = "Versicolor",
+                                "Speciesvirginica"  = "Virginica"),
+           highlight = c("Speciesversicolor", "Speciesvirginica"))
+```
+
+### Change colors
+
+```{r, dpi = 100, fig.width = 6.87, fig.height = 3.5}
+coefplotbl(fit, coef_rename = c("Sepal.Width"  = "Sepal Width",
+                                "Petal.Length" = "Petal Length",
+                                "Petal.Width"  = "Petal Width",
+                                "Speciesversicolor" = "Versicolor",
+                                "Speciesvirginica"  = "Virginica"),
+           highlight = c("Speciesversicolor", "Speciesvirginica"),
+           alpha     = 0.01,
+           colors    = c(sig = "black", insig = "gray90", highlight = "royalblue"))
+```
+
+### Omit specific covariates
+
+```{r, dpi = 100, fig.width = 6.87, fig.height = 3}
+coefplotbl(fit, coef_omit = c("Speciesversicolor", "Speciesvirginica"))
+```
+
+### Display p-value instead of confidential interval (4-digit)
+
+```{r, dpi = 100, fig.width = 6.87, fig.height = 3.5}
+coefplotbl(fit, statistics = "p", digits = 4)
+```
+
+### Labels
+
+```{r, dpi = 100, fig.width = 6.87, fig.height = 3.5}
+coefplotbl(fit, 
+           alpha  = 0.01,
+           title  = "Title",
+           xlab   = "x-axis label",
+           ylab   = "y-axis label")
+```

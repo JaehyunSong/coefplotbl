@@ -1,0 +1,23 @@
+Package: coefplotbl
+Title: Coefficient plot with table
+Version: 0.0.1
+Authors@R: 
+    person(given  = "Jaehyun", 
+           family = "Song",
+           email  = "tintstyle@gmail.com", 
+           role   = c("aut", "cre"))
+Description: Coefficient plot with table.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    broom,
+    forcats,
+    dplyr,
+    ggplot2,
+    stringr
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
