@@ -1,4 +1,4 @@
-# {coefplotbl} 0.0.1
+# {coefplotbl} 0.0.2
 
 Coefficient plot with table.
 

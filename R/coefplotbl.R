@@ -9,6 +9,7 @@
 #' @param digits a numeric. number of digits. Default is \code{3}.
 #' @param coef_rename A named character vector. For example, \code{c("Old1" = "New1", "Old2" = "New2")}
 #' @param coef_omit A character vector. Covariate names to be omitted. The covariate names must be the name before it was changed by \code{coef_rename}.
+#' @param coef_order A character vector. Order of covariates. The covariate names must be the name before it was changed by \code{coef_rename} and must include \code{"(Intercept)"}.
 #' @param highlight A character vector. Covariate names to be highlighted. The covariate names must be the name before it was changed by \code{coef_rename}.
 #' @param xlab a character.
 #' @param ylab a character.
@@ -71,6 +72,11 @@
 #' # Example 9: Show intercept
 #' coefplotbl(fit, intercept = TRUE)
 #'
+#' # Example 10: Re-order covariates
+#' coefplotbl(fit, coef_order = c("Speciesversicolor", "Speciesvirginica",
+#'                                "Sepal.Width", "Petal.Width", "Petal.Length",
+#'                                "(Intercept)"))
+#'
 
 coefplotbl <- function(x,
                        intercept   = FALSE,
@@ -81,6 +87,7 @@ coefplotbl <- function(x,
                        digits      = 3,
                        coef_rename = NULL,
                        coef_omit   = NULL,
+                       coef_order  = NULL,
                        highlight   = NULL,
                        xlab        = NULL,
                        ylab        = NULL,
@@ -112,11 +119,22 @@ coefplotbl <- function(x,
   # Extract statistics
   temp_df <- tidy(x, conf.int = TRUE, conf.level = 1 - alpha)
 
+  # Re-order covariates
+  if (!is.null(coef_order)) {
+    if (sum(coef_order %in% temp_df$term) != nrow(temp_df)) stop("All elements in coef_order must correspond with covariates.")
+    temp_df <- temp_df |>
+      mutate(term = factor(term, levels = coef_order)) |>
+      arrange(term)
+  }
+
   # Drop intercept term if "intercept = TRUE"
   if (!intercept) temp_df <- filter(temp_df, !grepl("Intercept", term))
 
   # Drop terms if "coef_omit" is not NULL
-  if (!is.null(coef_omit)) temp_df <- filter(temp_df, !(term %in% coef_omit))
+  if (!is.null(coef_omit)) {
+    if (prod(coef_omit %in% temp_df$term) == 0) stop("All elements in coef_omit must a subgroup of covariates.")
+    temp_df <- filter(temp_df, !(term %in% coef_omit))
+  }
 
   if (sig) {
     temp_df <- temp_df |>
@@ -168,6 +186,8 @@ coefplotbl <- function(x,
         mutate(tbl_text = paste0(est2, " (", p2, ")"),
                tbl_text = str_replace_all(tbl_text, "\\+", " ")) |>
         select(-c(std.error:p.value, est2:p2))
+    } else {
+      stop('statistics must be one of "ci", "se", "t", and "p".')
     }
   }
 

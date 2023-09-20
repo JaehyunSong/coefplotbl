@@ -14,6 +14,7 @@ coefplotbl(
   digits = 3,
   coef_rename = NULL,
   coef_omit = NULL,
+  coef_order = NULL,
   highlight = NULL,
   xlab = NULL,
   ylab = NULL,
@@ -43,6 +44,8 @@ coefplotbl(
 \item{coef_rename}{A named character vector. For example, \code{c("Old1" = "New1", "Old2" = "New2")}}
 
 \item{coef_omit}{A character vector. Covariate names to be omitted. The covariate names must be the name before it was changed by \code{coef_rename}.}
+
+\item{coef_order}{A character vector. Order of covariates. The covariate names must be the name before it was changed by \code{coef_rename} and must include \code{"(Intercept)"}.}
 
 \item{highlight}{A character vector. Covariate names to be highlighted. The covariate names must be the name before it was changed by \code{coef_rename}.}
 
@@ -110,5 +113,10 @@ coefplotbl(fit,
 
 # Example 9: Show intercept
 coefplotbl(fit, intercept = TRUE)
+
+# Example 10: Re-order covariates
+coefplotbl(fit, coef_order = c("Speciesversicolor", "Speciesvirginica",
+                               "Sepal.Width", "Petal.Width", "Petal.Length",
+                               "(Intercept)"))
 
 }
