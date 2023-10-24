@@ -124,4 +124,7 @@ coefplotbl(fit, coef_order = c("Speciesversicolor", "Speciesvirginica",
 
 # Example 11: Display Goodness of fit
 coefplotbl(fit, gof = c("adj.r.squared", "AIC"))
+
+# Example 12: Display Goodness of fit with custom name
+coefplotbl(fit, gof = c("Adj. R2" = "adj.r.squared", "AIC" = "AIC", "N" = "nobs"))
 }

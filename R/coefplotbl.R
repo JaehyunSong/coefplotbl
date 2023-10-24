@@ -80,6 +80,9 @@
 #'
 #' # Example 11: Display Goodness of fit
 #' coefplotbl(fit, gof = c("adj.r.squared", "AIC"))
+#'
+#' # Example 12: Display Goodness of fit with custom name
+#' coefplotbl(fit, gof = c("Adj. R2" = "adj.r.squared", "AIC" = "AIC", "N" = "nobs"))
 
 coefplotbl <- function(x,
                        intercept   = FALSE,
@@ -123,12 +126,19 @@ coefplotbl <- function(x,
   }
 
   # Extract gof
-  gof_df   <- try(broom::glance(x))
-  gof_df   <- select(gof_df, gof)
-  gof_list <- unlist(gof_df)
-  gof_list <- paste(names(gof_list), sprintf(paste0("%.", digits, "f"), gof_list),
-                    sep = ": ")
-  gof_list <- paste(gof_list, collapse = " | ")
+  if (!is.null(gof)) {
+    gof_df   <- try(broom::glance(x))
+    gof_df   <- select(gof_df, gof)
+    gof_list <- unlist(gof_df)
+    if (is.null(names(gof))) {
+      gof_list <- paste(names(gof_list), round(gof_list, digits),
+                        sep = ": ")
+    } else {
+      gof_list <- paste(names(gof), round(gof_list, digits),
+                        sep = ": ")
+    }
+    gof_list <- paste(gof_list, collapse = " | ")
+  }
 
   # Extract statistics
   temp_df <- try(broom::tidy(x, conf.int = TRUE, conf.level = 1 - alpha))

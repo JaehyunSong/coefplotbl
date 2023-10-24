@@ -97,3 +97,15 @@ coefplotbl(fit,
            xlab   = "x-axis label",
            ylab   = "y-axis label")
 ```
+
+### Display Goodness of fit
+
+```{r, dpi = 100, fig.width = 6.87, fig.height = 3.6}
+coefplotbl(fit, gof = c("adj.r.squared", "AIC"))
+```
+
+### Display Goodness of fit with custom name
+
+```{r, dpi = 100, fig.width = 6.87, fig.height = 3.6}
+coefplotbl(fit, gof = c("Adj. R2" = "adj.r.squared", "AIC" = "AIC", "N" = "nobs"))
+```
