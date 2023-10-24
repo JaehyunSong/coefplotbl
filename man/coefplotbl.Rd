@@ -8,7 +8,8 @@ coefplotbl(
   x,
   intercept = FALSE,
   add_tbl = TRUE,
-  statistics = "ci",
+  statistics = c("ci", "se", "t", "p"),
+  gof = NULL,
   alpha = 0.05,
   sig = TRUE,
   digits = 3,
@@ -34,6 +35,8 @@ coefplotbl(
 \item{add_tbl}{a logical. If \code{TRUE} (default), a regression table appears on the right side of the plot.}
 
 \item{statistics}{\code{"ci"} (confidential interval; default), \code{"se"} (standard error), \code{"t"} (t-value), or \code{"p"} (p-value).}
+
+\item{gof}{a character vector. Objects available for the \code{glance()} in the \{broom\} package. For example, \code{"AIC"}, \code{"BIC"}, \code{"logLik"}, \code{"r.squared"}, or \code{"adj.r.squared"}. Default is \code{NULL}.}
 
 \item{alpha}{a numeric. a significant level. Default is \code{0.05}.}
 
@@ -119,4 +122,6 @@ coefplotbl(fit, coef_order = c("Speciesversicolor", "Speciesvirginica",
                                "Sepal.Width", "Petal.Width", "Petal.Length",
                                "(Intercept)"))
 
+# Example 11: Display Goodness of fit
+coefplotbl(fit, gof = c("adj.r.squared", "AIC"))
 }

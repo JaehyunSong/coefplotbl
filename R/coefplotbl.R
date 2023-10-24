@@ -4,6 +4,7 @@
 #' @param intercept a logical. If \code{TRUE}, the intercept is displayed.Default is \code{FALSE}.
 #' @param add_tbl a logical. If \code{TRUE} (default), a regression table appears on the right side of the plot.
 #' @param statistics \code{"ci"} (confidential interval; default), \code{"se"} (standard error), \code{"t"} (t-value), or \code{"p"} (p-value).
+#' @param gof a character vector. Objects available for the \code{glance()} in the \{broom\} package. For example, \code{"AIC"}, \code{"BIC"}, \code{"logLik"}, \code{"r.squared"}, or \code{"adj.r.squared"}. Default is \code{NULL}.
 #' @param alpha a numeric. a significant level. Default is \code{0.05}.
 #' @param sig a logical. If \code{TRUE} (default), the point-ranges which are statistically significant are highlighted.
 #' @param digits a numeric. number of digits. Default is \code{3}.
@@ -77,11 +78,14 @@
 #'                                "Sepal.Width", "Petal.Width", "Petal.Length",
 #'                                "(Intercept)"))
 #'
+#' # Example 11: Display Goodness of fit
+#' coefplotbl(fit, gof = c("adj.r.squared", "AIC"))
 
 coefplotbl <- function(x,
                        intercept   = FALSE,
                        add_tbl     = TRUE,
-                       statistics  = "ci",
+                       statistics  = c("ci", "se", "t", "p"),
+                       gof         = NULL,
                        alpha       = 0.05,
                        sig         = TRUE,
                        digits      = 3,
@@ -97,6 +101,8 @@ coefplotbl <- function(x,
                        fontsize    = 12,
                        colors      = c(sig = "black", insig = "gray70", highlight = "red"),
                        ...) {
+
+  statistics <- match.arg(statistics)
 
   term <- estimate <- conf.low <- conf.high <- NULL
   est2 <- ll2 <- p2 <- se2 <- t2 <- ul2 <- NULL
@@ -116,8 +122,16 @@ coefplotbl <- function(x,
     }
   }
 
+  # Extract gof
+  gof_df   <- try(broom::glance(x))
+  gof_df   <- select(gof_df, gof)
+  gof_list <- unlist(gof_df)
+  gof_list <- paste(names(gof_list), sprintf(paste0("%.", digits, "f"), gof_list),
+                    sep = ": ")
+  gof_list <- paste(gof_list, collapse = " | ")
+
   # Extract statistics
-  temp_df <- tidy(x, conf.int = TRUE, conf.level = 1 - alpha)
+  temp_df <- try(broom::tidy(x, conf.int = TRUE, conf.level = 1 - alpha))
 
   # Re-order covariates
   if (!is.null(coef_order)) {
@@ -224,9 +238,16 @@ coefplotbl <- function(x,
                          labels   = temp_df$term)
   }
 
+  if (!is.null(gof)) {
+    plt <- plt +
+      labs(x = xlab, title = title, caption = gof_list)
+  } else{
+    plt <- plt +
+      labs(x = xlab, title = title)
+  }
+
   plt <- plt +
     guides(color = "none") +
-    labs(x = xlab, title = title) +
     theme_bw(base_size = fontsize) +
     theme(panel.border       = element_blank(),
           axis.title.y.left  = element_blank(),
